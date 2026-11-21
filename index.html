@@ -1,0 +1,1280 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Periodicity — Historical & Modern Periodic Systems | Senior Section CMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0d0e12;
+      color: #f1f5f9;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0e12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232736;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e63926;
+    }
+  </style>
+  <!-- React 18 & Babel Standalone for Zero-Build Single-File Execution -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    // Lightweight Icon Bridge using Lucide global
+    const Icon = ({ name, className = "w-4 h-4" }) => {
+      const ref = useRef(null);
+      useEffect(() => {
+        if (ref.current && window.lucide) {
+          ref.current.innerHTML = '';
+          const i = document.createElement('i');
+          i.setAttribute('data-lucide', name);
+          i.className = className;
+          ref.current.appendChild(i);
+          window.lucide.createIcons({ root: ref.current });
+        }
+      }, [name, className]);
+      return <span ref={ref} className="inline-flex items-center justify-center shrink-0" />;
+    };
+
+    // ============================================================================
+    // 1. SCIENTIFIC DATASET: ALL 118 ELEMENTS + REAL SAMPLE PHOTOGRAPHS
+    // ============================================================================
+    const WIKI_IMG = {
+      1: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Hydrogen_discharge_tube.jpg/240px-Hydrogen_discharge_tube.jpg",
+      2: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Helium-glow.jpg/240px-Helium-glow.jpg",
+      3: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Lithium_element.jpg/240px-Lithium_element.jpg",
+      4: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Beryllium_%28Be%29.jpg/240px-Beryllium_%28Be%29.jpg",
+      5: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Boron_R105.jpg/240px-Boron_R105.jpg",
+      6: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Graphite-and-diamond-with-scale.jpg/240px-Graphite-and-diamond-with-scale.jpg",
+      7: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Nitrogen-glow.jpg/240px-Nitrogen-glow.jpg",
+      8: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Liquid_oxygen_in_a_beaker_4.jpg/240px-Liquid_oxygen_in_a_beaker_4.jpg",
+      9: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Liquid_fluorine_at_-196C.jpg/240px-Liquid_fluorine_at_-196C.jpg",
+      10: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Neon-glow.jpg/240px-Neon-glow.jpg",
+      11: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Na_%28Sodium%29.jpg/240px-Na_%28Sodium%29.jpg",
+      12: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Magnesium_crystals.jpg/240px-Magnesium_crystals.jpg",
+      13: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Aluminium-4.jpg/240px-Aluminium-4.jpg",
+      14: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/SiliconCroda.jpg/240px-SiliconCroda.jpg",
+      15: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/PhosphCombi.jpg/240px-PhosphCombi.jpg",
+      16: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Sulfur-sample.jpg/240px-Sulfur-sample.jpg",
+      17: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Chlorine_ampoule.jpg/240px-Chlorine_ampoule.jpg",
+      18: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Argon-glow.jpg/240px-Argon-glow.jpg",
+      19: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Potassium.JPG/240px-Potassium.JPG",
+      20: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Calcium_unter_Argon_Schutzgasatmosph%C3%A4re.jpg/240px-Calcium_unter_Argon_Schutzgasatmosph%C3%A4re.jpg",
+      21: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Scandium_sublimed_dendritic_and_1cm3_cube.jpg/240px-Scandium_sublimed_dendritic_and_1cm3_cube.jpg",
+      22: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Titan-crystal_bar.JPG/240px-Titan-crystal_bar.JPG",
+      23: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Vanadium_crystal_bar_and_1cm3_cube.jpg/240px-Vanadium_crystal_bar_and_1cm3_cube.jpg",
+      24: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Chromium_crystals_and_1cm3_cube.jpg/240px-Chromium_crystals_and_1cm3_cube.jpg",
+      25: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Manganese_electrolytic_and_1cm3_cube.jpg/240px-Manganese_electrolytic_and_1cm3_cube.jpg",
+      26: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Iron_electrolytic_and_1cm3_cube.jpg/240px-Iron_electrolytic_and_1cm3_cube.jpg",
+      27: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Cobalt_electrolytic_and_1cm3_cube.jpg/240px-Cobalt_electrolytic_and_1cm3_cube.jpg",
+      28: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Nickel_chunk.jpg/240px-Nickel_chunk.jpg",
+      29: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/NatCopper.jpg/240px-NatCopper.jpg",
+      30: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Zinc_fragment_sublimed_and_1cm3_cube.jpg/240px-Zinc_fragment_sublimed_and_1cm3_cube.jpg",
+      31: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Solid_gallium_%28Ga%29.jpg/240px-Solid_gallium_%28Ga%29.jpg",
+      32: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Polycrystalline-germanium.jpg/240px-Polycrystalline-germanium.jpg",
+      33: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Arsen_1a.jpg/240px-Arsen_1a.jpg",
+      34: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Selenium_black.jpg/240px-Selenium_black.jpg",
+      35: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Bromine-ampoule.jpg/240px-Bromine-ampoule.jpg",
+      36: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Krypton-glow.jpg/240px-Krypton-glow.jpg",
+      37: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Rb5.JPG/240px-Rb5.JPG",
+      38: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Strontium_destilled_crystals.jpg/240px-Strontium_destilled_crystals.jpg",
+      39: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Yttrium_sublimed_dendritic_and_1cm3_cube.jpg/240px-Yttrium_sublimed_dendritic_and_1cm3_cube.jpg",
+      40: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Zirconium_crystal_bar_and_1cm3_cube.jpg/240px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
+      41: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Niobium_strips.JPG/240px-Niobium_strips.JPG",
+      42: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Molybdenum_crystal_bar_and_1cm3_cube.jpg/240px-Molybdenum_crystal_bar_and_1cm3_cube.jpg",
+      43: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Technetium-sample-cropped.jpg/240px-Technetium-sample-cropped.jpg",
+      44: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ruthenium_crystal.jpg/240px-Ruthenium_crystal.jpg",
+      45: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Rhodium_powder_pressed_melted.jpg/240px-Rhodium_powder_pressed_melted.jpg",
+      46: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Palladium_%2846_Pd%29.jpg/240px-Palladium_%2846_Pd%29.jpg",
+      47: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Silver_crystal.jpg/240px-Silver_crystal.jpg",
+      48: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Cadmium-crystal_bar.jpg/240px-Cadmium-crystal_bar.jpg",
+      49: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Indium_wetting_glass.jpg/240px-Indium_wetting_glass.jpg",
+      50: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Sn-Alpha-Beta.jpg/240px-Sn-Alpha-Beta.jpg",
+      51: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Antimony-4.jpg/240px-Antimony-4.jpg",
+      52: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Tellurium2.jpg/240px-Tellurium2.jpg",
+      53: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Iodine-sample.jpg/240px-Iodine-sample.jpg",
+      54: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Xenon-glow.jpg/240px-Xenon-glow.jpg",
+      55: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Cesium.jpg/240px-Cesium.jpg",
+      56: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Barium_unter_Argon_Schutzgas_Atmosph%C3%A4re.jpg/240px-Barium_unter_Argon_Schutzgas_Atmosph%C3%A4re.jpg",
+      57: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Lanthanum.jpg/240px-Lanthanum.jpg",
+      58: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Cerium2.jpg/240px-Cerium2.jpg",
+      59: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Praseodymium.jpg/240px-Praseodymium.jpg",
+      60: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Neodymium2.jpg/240px-Neodymium2.jpg",
+      61: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Promethium.jpg/240px-Promethium.jpg",
+      62: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Samarium-2.jpg/240px-Samarium-2.jpg",
+      63: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Europium.jpg/240px-Europium.jpg",
+      64: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Gadolinium-2.jpg/240px-Gadolinium-2.jpg",
+      65: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Terbium-2.jpg/240px-Terbium-2.jpg",
+      66: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Dysprosium-2.jpg/240px-Dysprosium-2.jpg",
+      67: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Holmium2.jpg/240px-Holmium2.jpg",
+      68: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Erbium-2.jpg/240px-Erbium-2.jpg",
+      69: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Thulium-2.jpg/240px-Thulium-2.jpg",
+      70: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Ytterbium-3.jpg/240px-Ytterbium-3.jpg",
+      71: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Lutetium.jpg/240px-Lutetium.jpg",
+      72: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Hafnium_crystal_bar_and_1cm3_cube.jpg/240px-Hafnium_crystal_bar_and_1cm3_cube.jpg",
+      73: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Tantalum_single_crystal_and_1cm3_cube.jpg/240px-Tantalum_single_crystal_and_1cm3_cube.jpg",
+      74: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Tungsten_rod_with_oxidised_surface.jpg/240px-Tungsten_rod_with_oxidised_surface.jpg",
+      75: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Rhenium_single_crystal_bar_and_1cm3_cube.jpg/240px-Rhenium_single_crystal_bar_and_1cm3_cube.jpg",
+      76: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Osmium-crystal_2.jpg/240px-Osmium-crystal_2.jpg",
+      77: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Iridium-2.jpg/240px-Iridium-2.jpg",
+      78: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Platinum_crystals.jpg/240px-Platinum_crystals.jpg",
+      79: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Gold-crystals.jpg/240px-Gold-crystals.jpg",
+      80: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Pouring_liquid_mercury_bionerd.jpg/240px-Pouring_liquid_mercury_bionerd.jpg",
+      81: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Thallium_pieces_in_ampoule.jpg/240px-Thallium_pieces_in_ampoule.jpg",
+      82: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Lead_electrolytic_and_1cm3_cube.jpg/240px-Lead_electrolytic_and_1cm3_cube.jpg",
+      83: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Bismuth_crystal_macro.jpg/240px-Bismuth_crystal_macro.jpg",
+      84: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Polonium.jpg/240px-Polonium.jpg",
+      85: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Astatine_glow.jpg/240px-Astatine_glow.jpg",
+      86: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Radon_ampoule.jpg/240px-Radon_ampoule.jpg",
+      87: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Francium_ore.jpg/240px-Francium_ore.jpg",
+      88: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Radium226.jpg/240px-Radium226.jpg",
+      89: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Actinium_sample.jpg/240px-Actinium_sample.jpg",
+      90: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Thorium_sample.jpg/240px-Thorium_sample.jpg",
+      91: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Protactinium-233.jpg/240px-Protactinium-233.jpg",
+      92: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/HEUraniumC.jpg/240px-HEUraniumC.jpg",
+      93: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Neptunium2.jpg/240px-Neptunium2.jpg",
+      94: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Plutonium_pellet.jpg/240px-Plutonium_pellet.jpg",
+      95: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Americium_microscope.jpg/240px-Americium_microscope.jpg",
+      96: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Curium.jpg/240px-Curium.jpg",
+      97: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Berkelium.jpg/240px-Berkelium.jpg",
+      98: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Californium.jpg/240px-Californium.jpg",
+      99: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Einsteinium.jpg/240px-Einsteinium.jpg"
+    };
+
+    const RAW_ELEMENTS = [
+      [1,"H","Hydrogen",1.008,"Reactive Nonmetal",1,1,"s","1s¹",[1],"Gas","Henry Cavendish",1766],
+      [2,"He","Helium",4.0026,"Noble Gas",1,18,"s","1s²",[2],"Gas","Pierre Janssen & Norman Lockyer",1868],
+      [3,"Li","Lithium",6.94,"Alkali Metal",2,1,"s","[He] 2s¹",[2,1],"Solid","Johan August Arfwedson",1817],
+      [4,"Be","Beryllium",9.0122,"Alkaline Earth Metal",2,2,"s","[He] 2s²",[2,2],"Solid","Louis Nicolas Vauquelin",1798],
+      [5,"B","Boron",10.81,"Metalloid",2,13,"p","[He] 2s² 2p¹",[2,3],"Solid","Joseph Louis Gay-Lussac",1808],
+      [6,"C","Carbon",12.011,"Reactive Nonmetal",2,14,"p","[He] 2s² 2p²",[2,4],"Solid","Ancient Civilizations",-3750],
+      [7,"N","Nitrogen",14.007,"Reactive Nonmetal",2,15,"p","[He] 2s² 2p³",[2,5],"Gas","Daniel Rutherford",1772],
+      [8,"O","Oxygen",15.999,"Reactive Nonmetal",2,16,"p","[He] 2s² 2p⁴",[2,6],"Gas","Carl Wilhelm Scheele",1771],
+      [9,"F","Fluorine",18.998,"Reactive Nonmetal",2,17,"p","[He] 2s² 2p⁵",[2,7],"Gas","Henri Moissan",1886],
+      [10,"Ne","Neon",20.180,"Noble Gas",2,18,"p","[He] 2s² 2p⁶",[2,8],"Gas","William Ramsay & Morris Travers",1898],
+      [11,"Na","Sodium",22.990,"Alkali Metal",3,1,"s","[Ne] 3s¹",[2,8,1],"Solid","Humphry Davy",1807],
+      [12,"Mg","Magnesium",24.305,"Alkaline Earth Metal",3,2,"s","[Ne] 3s²",[2,8,2],"Solid","Joseph Black",1755],
+      [13,"Al","Aluminium",26.982,"Post-Transition Metal",3,13,"p","[Ne] 3s² 3p¹",[2,8,3],"Solid","Hans Christian Ørsted",1825],
+      [14,"Si","Silicon",28.085,"Metalloid",3,14,"p","[Ne] 3s² 3p²",[2,8,4],"Solid","Jöns Jacob Berzelius",1823],
+      [15,"P","Phosphorus",30.974,"Reactive Nonmetal",3,15,"p","[Ne] 3s² 3p³",[2,8,5],"Solid","Hennig Brand",1669],
+      [16,"S","Sulfur",32.06,"Reactive Nonmetal",3,16,"p","[Ne] 3s² 3p⁴",[2,8,6],"Solid","Ancient Civilizations",-2000],
+      [17,"Cl","Chlorine",35.45,"Reactive Nonmetal",3,17,"p","[Ne] 3s² 3p⁵",[2,8,7],"Gas","Carl Wilhelm Scheele",1774],
+      [18,"Ar","Argon",39.948,"Noble Gas",3,18,"p","[Ne] 3s² 3p⁶",[2,8,8],"Gas","Lord Rayleigh & William Ramsay",1894],
+      [19,"K","Potassium",39.098,"Alkali Metal",4,1,"s","[Ar] 4s¹",[2,8,8,1],"Solid","Humphry Davy",1807],
+      [20,"Ca","Calcium",40.078,"Alkaline Earth Metal",4,2,"s","[Ar] 4s²",[2,8,8,2],"Solid","Humphry Davy",1808],
+      [21,"Sc","Scandium",44.956,"Transition Metal",4,3,"d","[Ar] 3d¹ 4s²",[2,8,9,2],"Solid","Lars Fredrik Nilson",1879],
+      [22,"Ti","Titanium",47.867,"Transition Metal",4,4,"d","[Ar] 3d² 4s²",[2,8,10,2],"Solid","William Gregor",1791],
+      [23,"V","Vanadium",50.942,"Transition Metal",4,5,"d","[Ar] 3d³ 4s²",[2,8,11,2],"Solid","Andrés Manuel del Río",1801],
+      [24,"Cr","Chromium",51.996,"Transition Metal",4,6,"d","[Ar] 3d⁵ 4s¹",[2,8,13,1],"Solid","Louis Nicolas Vauquelin",1797],
+      [25,"Mn","Manganese",54.938,"Transition Metal",4,7,"d","[Ar] 3d⁵ 4s²",[2,8,13,2],"Solid","Johan Gottlieb Gahn",1774],
+      [26,"Fe","Iron",55.845,"Transition Metal",4,8,"d","[Ar] 3d⁶ 4s²",[2,8,14,2],"Solid","Ancient Civilizations",-5000],
+      [27,"Co","Cobalt",58.933,"Transition Metal",4,9,"d","[Ar] 3d⁷ 4s²",[2,8,15,2],"Solid","Georg Brandt",1735],
+      [28,"Ni","Nickel",58.693,"Transition Metal",4,10,"d","[Ar] 3d⁸ 4s²",[2,8,16,2],"Solid","Axel Fredrik Cronstedt",1751],
+      [29,"Cu","Copper",63.546,"Transition Metal",4,11,"d","[Ar] 3d¹⁰ 4s¹",[2,8,18,1],"Solid","Middle East",-9000],
+      [30,"Zn","Zinc",65.38,"Transition Metal",4,12,"d","[Ar] 3d¹⁰ 4s²",[2,8,18,2],"Solid","Indian Metallurgists",-1000],
+      [31,"Ga","Gallium",69.723,"Post-Transition Metal",4,13,"p","[Ar] 3d¹⁰ 4s² 4p¹",[2,8,18,3],"Solid","Lecoq de Boisbaudran",1875],
+      [32,"Ge","Germanium",72.630,"Metalloid",4,14,"p","[Ar] 3d¹⁰ 4s² 4p²",[2,8,18,4],"Solid","Clemens Winkler",1886],
+      [33,"As","Arsenic",74.922,"Metalloid",4,15,"p","[Ar] 3d¹⁰ 4s² 4p³",[2,8,18,5],"Solid","Albertus Magnus",1250],
+      [34,"Se","Selenium",78.971,"Reactive Nonmetal",4,16,"p","[Ar] 3d¹⁰ 4s² 4p⁴",[2,8,18,6],"Solid","Jöns Jacob Berzelius",1817],
+      [35,"Br","Bromine",79.904,"Reactive Nonmetal",4,17,"p","[Ar] 3d¹⁰ 4s² 4p⁵",[2,8,18,7],"Liquid","Antoine Jérôme Balard",1826],
+      [36,"Kr","Krypton",83.798,"Noble Gas",4,18,"p","[Ar] 3d¹⁰ 4s² 4p⁶",[2,8,18,8],"Gas","William Ramsay & Morris Travers",1898],
+      [37,"Rb","Rubidium",85.468,"Alkali Metal",5,1,"s","[Kr] 5s¹",[2,8,18,8,1],"Solid","Robert Bunsen & Gustav Kirchhoff",1861],
+      [38,"Sr","Strontium",87.62,"Alkaline Earth Metal",5,2,"s","[Kr] 5s²",[2,8,18,8,2],"Solid","Adair Crawford",1790],
+      [39,"Y","Yttrium",88.906,"Transition Metal",5,3,"d","[Kr] 4d¹ 5s²",[2,8,18,9,2],"Solid","Johan Gadolin",1794],
+      [40,"Zr","Zirconium",91.224,"Transition Metal",5,4,"d","[Kr] 4d² 5s²",[2,8,18,10,2],"Solid","Martin Heinrich Klaproth",1789],
+      [41,"Nb","Niobium",92.906,"Transition Metal",5,5,"d","[Kr] 4d⁴ 5s¹",[2,8,18,12,1],"Solid","Charles Hatchett",1801],
+      [42,"Mo","Molybdenum",95.95,"Transition Metal",5,6,"d","[Kr] 4d⁵ 5s¹",[2,8,18,13,1],"Solid","Carl Wilhelm Scheele",1778],
+      [43,"Tc","Technetium",98,"Transition Metal",5,7,"d","[Kr] 4d⁵ 5s²",[2,8,18,13,2],"Solid","Carlo Perrier & Emilio Segrè",1937],
+      [44,"Ru","Ruthenium",101.07,"Transition Metal",5,8,"d","[Kr] 4d⁷ 5s¹",[2,8,18,15,1],"Solid","Karl Ernst Claus",1844],
+      [45,"Rh","Rhodium",102.91,"Transition Metal",5,9,"d","[Kr] 4d⁸ 5s¹",[2,8,18,16,1],"Solid","William Hyde Wollaston",1803],
+      [46,"Pd","Palladium",106.42,"Transition Metal",5,10,"d","[Kr] 4d¹⁰",[2,8,18,18],"Solid","William Hyde Wollaston",1803],
+      [47,"Ag","Silver",107.87,"Transition Metal",5,11,"d","[Kr] 4d¹⁰ 5s¹",[2,8,18,18,1],"Solid","Ancient Civilizations",-5000],
+      [48,"Cd","Cadmium",112.41,"Transition Metal",5,12,"d","[Kr] 4d¹⁰ 5s²",[2,8,18,18,2],"Solid","Karl Samuel Leberecht Hermann",1817],
+      [49,"In","Indium",114.82,"Post-Transition Metal",5,13,"p","[Kr] 4d¹⁰ 5s² 5p¹",[2,8,18,18,3],"Solid","Ferdinand Reich & Hieronymous Richter",1863],
+      [50,"Sn","Tin",118.71,"Post-Transition Metal",5,14,"p","[Kr] 4d¹⁰ 5s² 5p²",[2,8,18,18,4],"Solid","Ancient Civilizations",-3500],
+      [51,"Sb","Antimony",121.76,"Metalloid",5,15,"p","[Kr] 4d¹⁰ 5s² 5p³",[2,8,18,18,5],"Solid","Ancient Civilizations",-3000],
+      [52,"Te","Tellurium",127.60,"Metalloid",5,16,"p","[Kr] 4d¹⁰ 5s² 5p⁴",[2,8,18,18,6],"Solid","Franz-Joseph Müller von Reichenstein",1782],
+      [53,"I","Iodine",126.90,"Reactive Nonmetal",5,17,"p","[Kr] 4d¹⁰ 5s² 5p⁵",[2,8,18,18,7],"Solid","Bernard Courtois",1811],
+      [54,"Xe","Xenon",131.29,"Noble Gas",5,18,"p","[Kr] 4d¹⁰ 5s² 5p⁶",[2,8,18,18,8],"Gas","William Ramsay & Morris Travers",1898],
+      [55,"Cs","Caesium",132.91,"Alkali Metal",6,1,"s","[Xe] 6s¹",[2,8,18,18,8,1],"Solid","Robert Bunsen & Gustav Kirchhoff",1860],
+      [56,"Ba","Barium",137.33,"Alkaline Earth Metal",6,2,"s","[Xe] 6s²",[2,8,18,18,8,2],"Solid","Carl Wilhelm Scheele",1772],
+      [57,"La","Lanthanum",138.91,"Lanthanide",6,3,"f","[Xe] 5d¹ 6s²",[2,8,18,18,9,2],"Solid","Carl Gustaf Mosander",1839],
+      [58,"Ce","Cerium",140.12,"Lanthanide",6,3,"f","[Xe] 4f¹ 5d¹ 6s²",[2,8,18,19,9,2],"Solid","Martin Heinrich Klaproth",1803],
+      [59,"Pr","Praseodymium",140.91,"Lanthanide",6,3,"f","[Xe] 4f³ 6s²",[2,8,18,21,8,2],"Solid","Carl Auer von Welsbach",1885],
+      [60,"Nd","Neodymium",144.24,"Lanthanide",6,3,"f","[Xe] 4f⁴ 6s²",[2,8,18,22,8,2],"Solid","Carl Auer von Welsbach",1885],
+      [61,"Pm","Promethium",145,"Lanthanide",6,3,"f","[Xe] 4f⁵ 6s²",[2,8,18,23,8,2],"Solid","Jacob A. Marinsky",1945],
+      [62,"Sm","Samarium",150.36,"Lanthanide",6,3,"f","[Xe] 4f⁶ 6s²",[2,8,18,24,8,2],"Solid","Lecoq de Boisbaudran",1879],
+      [63,"Eu","Europium",151.96,"Lanthanide",6,3,"f","[Xe] 4f⁷ 6s²",[2,8,18,25,8,2],"Solid","Eugène-Anatole Demarçay",1896],
+      [64,"Gd","Gadolinium",157.25,"Lanthanide",6,3,"f","[Xe] 4f⁷ 5d¹ 6s²",[2,8,18,25,9,2],"Solid","Jean Charles Galissard de Marignac",1880],
+      [65,"Tb","Terbium",158.93,"Lanthanide",6,3,"f","[Xe] 4f⁹ 6s²",[2,8,18,27,8,2],"Solid","Carl Gustaf Mosander",1843],
+      [66,"Dy","Dysprosium",162.50,"Lanthanide",6,3,"f","[Xe] 4f¹⁰ 6s²",[2,8,18,28,8,2],"Solid","Lecoq de Boisbaudran",1886],
+      [67,"Ho","Holmium",164.93,"Lanthanide",6,3,"f","[Xe] 4f¹¹ 6s²",[2,8,18,29,8,2],"Solid","Marc Delafontaine",1878],
+      [68,"Er","Erbium",167.26,"Lanthanide",6,3,"f","[Xe] 4f¹² 6s²",[2,8,18,30,8,2],"Solid","Carl Gustaf Mosander",1843],
+      [69,"Tm","Thulium",168.93,"Lanthanide",6,3,"f","[Xe] 4f¹³ 6s²",[2,8,18,31,8,2],"Solid","Per Teodor Cleve",1879],
+      [70,"Yb","Ytterbium",173.05,"Lanthanide",6,3,"f","[Xe] 4f¹⁴ 6s²",[2,8,18,32,8,2],"Solid","Jean Charles Galissard de Marignac",1878],
+      [71,"Lu","Lutetium",174.97,"Lanthanide",6,3,"d","[Xe] 4f¹⁴ 5d¹ 6s²",[2,8,18,32,9,2],"Solid","Georges Urbain",1907],
+      [72,"Hf","Hafnium",178.49,"Transition Metal",6,4,"d","[Xe] 4f¹⁴ 5d² 6s²",[2,8,18,32,10,2],"Solid","Dirk Coster & George de Hevesy",1923],
+      [73,"Ta","Tantalum",180.95,"Transition Metal",6,5,"d","[Xe] 4f¹⁴ 5d³ 6s²",[2,8,18,32,11,2],"Solid","Anders Gustaf Ekeberg",1802],
+      [74,"W","Tungsten",183.84,"Transition Metal",6,6,"d","[Xe] 4f¹⁴ 5d⁴ 6s²",[2,8,18,32,12,2],"Solid","Juan José & Fausto Elhuyar",1783],
+      [75,"Re","Rhenium",186.21,"Transition Metal",6,7,"d","[Xe] 4f¹⁴ 5d⁵ 6s²",[2,8,18,32,13,2],"Solid","Walter Noddack & Ida Tacke",1925],
+      [76,"Os","Osmium",190.23,"Transition Metal",6,8,"d","[Xe] 4f¹⁴ 5d⁶ 6s²",[2,8,18,32,14,2],"Solid","Smithson Tennant",1803],
+      [77,"Ir","Iridium",192.22,"Transition Metal",6,9,"d","[Xe] 4f¹⁴ 5d⁷ 6s²",[2,8,18,32,15,2],"Solid","Smithson Tennant",1803],
+      [78,"Pt","Platinum",195.08,"Transition Metal",6,10,"d","[Xe] 4f¹⁴ 5d⁹ 6s¹",[2,8,18,32,17,1],"Solid","Antonio de Ulloa",1735],
+      [79,"Au","Gold",196.97,"Transition Metal",6,11,"d","[Xe] 4f¹⁴ 5d¹⁰ 6s¹",[2,8,18,32,18,1],"Solid","Middle East",-6000],
+      [80,"Hg","Mercury",200.59,"Transition Metal",6,12,"d","[Xe] 4f¹⁴ 5d¹⁰ 6s²",[2,8,18,32,18,2],"Liquid","Ancient China & India",-1500],
+      [81,"Tl","Thallium",204.38,"Post-Transition Metal",6,13,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹",[2,8,18,32,18,3],"Solid","William Crookes",1861],
+      [82,"Pb","Lead",207.2,"Post-Transition Metal",6,14,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²",[2,8,18,32,18,4],"Solid","Middle East",-7000],
+      [83,"Bi","Bismuth",208.98,"Post-Transition Metal",6,15,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³",[2,8,18,32,18,5],"Solid","Claude François Geoffroy",1753],
+      [84,"Po","Polonium",209,"Post-Transition Metal",6,16,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴",[2,8,18,32,18,6],"Solid","Marie & Pierre Curie",1898],
+      [85,"At","Astatine",210,"Metalloid",6,17,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵",[2,8,18,32,18,7],"Solid","Dale R. Corson",1940],
+      [86,"Rn","Radon",222,"Noble Gas",6,18,"p","[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶",[2,8,18,32,18,8],"Gas","Friedrich Ernst Dorn",1900],
+      [87,"Fr","Francium",223,"Alkali Metal",7,1,"s","[Rn] 7s¹",[2,8,18,32,18,8,1],"Solid","Marguerite Perey",1939],
+      [88,"Ra","Radium",226,"Alkaline Earth Metal",7,2,"s","[Rn] 7s²",[2,8,18,32,18,8,2],"Solid","Marie & Pierre Curie",1898],
+      [89,"Ac","Actinium",227,"Actinide",7,3,"f","[Rn] 6d¹ 7s²",[2,8,18,32,18,9,2],"Solid","Friedrich Oskar Giesel",1902],
+      [90,"Th","Thorium",232.04,"Actinide",7,3,"f","[Rn] 6d² 7s²",[2,8,18,32,18,10,2],"Solid","Jöns Jacob Berzelius",1829],
+      [91,"Pa","Protactinium",231.04,"Actinide",7,3,"f","[Rn] 5f² 6d¹ 7s²",[2,8,18,32,20,9,2],"Solid","Kasimir Fajans & Oswald Göhring",1913],
+      [92,"U","Uranium",238.03,"Actinide",7,3,"f","[Rn] 5f³ 6d¹ 7s²",[2,8,18,32,21,9,2],"Solid","Martin Heinrich Klaproth",1789],
+      [93,"Np","Neptunium",237,"Actinide",7,3,"f","[Rn] 5f⁴ 6d¹ 7s²",[2,8,18,32,22,9,2],"Solid","Edwin McMillan & Philip Abelson",1940],
+      [94,"Pu","Plutonium",244,"Actinide",7,3,"f","[Rn] 5f⁶ 7s²",[2,8,18,32,24,8,2],"Solid","Glenn T. Seaborg",1940],
+      [95,"Am","Americium",243,"Actinide",7,3,"f","[Rn] 5f⁷ 7s²",[2,8,18,32,25,8,2],"Solid","Glenn T. Seaborg",1944],
+      [96,"Cm","Curium",247,"Actinide",7,3,"f","[Rn] 5f⁷ 6d¹ 7s²",[2,8,18,32,25,9,2],"Solid","Glenn T. Seaborg",1944],
+      [97,"Bk","Berkelium",247,"Actinide",7,3,"f","[Rn] 5f⁹ 7s²",[2,8,18,32,27,8,2],"Solid","Glenn T. Seaborg",1949],
+      [98,"Cf","Californium",251,"Actinide",7,3,"f","[Rn] 5f¹⁰ 7s²",[2,8,18,32,28,8,2],"Solid","Glenn T. Seaborg",1950],
+      [99,"Es","Einsteinium",252,"Actinide",7,3,"f","[Rn] 5f¹¹ 7s²",[2,8,18,32,29,8,2],"Solid","Albert Ghiorso",1952],
+      [100,"Fm","Fermium",257,"Actinide",7,3,"f","[Rn] 5f¹² 7s²",[2,8,18,32,30,8,2],"Solid","Albert Ghiorso",1952],
+      [101,"Md","Mendelevium",258,"Actinide",7,3,"f","[Rn] 5f¹³ 7s²",[2,8,18,32,31,8,2],"Solid","Albert Ghiorso & Glenn T. Seaborg",1955],
+      [102,"No","Nobelium",259,"Actinide",7,3,"f","[Rn] 5f¹⁴ 7s²",[2,8,18,32,32,8,2],"Solid","Joint Institute for Nuclear Research",1966],
+      [103,"Lr","Lawrencium",266,"Actinide",7,3,"d","[Rn] 5f¹⁴ 7s² 7p¹",[2,8,18,32,32,8,3],"Solid","Albert Ghiorso",1961],
+      [104,"Rf","Rutherfordium",267,"Transition Metal",7,4,"d","[Rn] 5f¹⁴ 6d² 7s²",[2,8,18,32,32,10,2],"Solid","JINR & LBNL",1964],
+      [105,"Db","Dubnium",268,"Transition Metal",7,5,"d","[Rn] 5f¹⁴ 6d³ 7s²",[2,8,18,32,32,11,2],"Solid","JINR & LBNL",1970],
+      [106,"Sg","Seaborgium",269,"Transition Metal",7,6,"d","[Rn] 5f¹⁴ 6d⁴ 7s²",[2,8,18,32,32,12,2],"Solid","Lawrence Berkeley National Lab",1974],
+      [107,"Bh","Bohrium",270,"Transition Metal",7,7,"d","[Rn] 5f¹⁴ 6d⁵ 7s²",[2,8,18,32,32,13,2],"Solid","GSI Helmholtz Centre",1981],
+      [108,"Hs","Hassium",277,"Transition Metal",7,8,"d","[Rn] 5f¹⁴ 6d⁶ 7s²",[2,8,18,32,32,14,2],"Solid","GSI Helmholtz Centre",1984],
+      [109,"Mt","Meitnerium",278,"Unknown",7,9,"d","[Rn] 5f¹⁴ 6d⁷ 7s²",[2,8,18,32,32,15,2],"Solid","GSI Helmholtz Centre",1982],
+      [110,"Ds","Darmstadtium",281,"Unknown",7,10,"d","[Rn] 5f¹⁴ 6d⁸ 7s²",[2,8,18,32,32,16,2],"Solid","GSI Helmholtz Centre",1994],
+      [111,"Rg","Roentgenium",282,"Unknown",7,11,"d","[Rn] 5f¹⁴ 6d⁹ 7s²",[2,8,18,32,32,17,2],"Solid","GSI Helmholtz Centre",1994],
+      [112,"Cn","Copernicium",285,"Transition Metal",7,12,"d","[Rn] 5f¹⁴ 6d¹⁰ 7s²",[2,8,18,32,32,18,2],"Gas","GSI Helmholtz Centre",1996],
+      [113,"Nh","Nihonium",286,"Unknown",7,13,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹",[2,8,18,32,32,18,3],"Solid","RIKEN",2004],
+      [114,"Fl","Flerovium",289,"Post-Transition Metal",7,14,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²",[2,8,18,32,32,18,4],"Solid","JINR & LLNL",1999],
+      [115,"Mc","Moscovium",290,"Unknown",7,15,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³",[2,8,18,32,32,18,5],"Solid","JINR & LLNL",2003],
+      [116,"Lv","Livermorium",293,"Unknown",7,16,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴",[2,8,18,32,32,18,6],"Solid","JINR & LLNL",2000],
+      [117,"Ts","Tennessine",294,"Unknown",7,17,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵",[2,8,18,32,32,18,7],"Solid","JINR & ORNL",2010],
+      [118,"Og","Oganesson",294,"Unknown",7,18,"p","[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶",[2,8,18,32,32,18,8],"Solid","JINR & LLNL",2002]
+    ];
+
+    const ELEMENTS = RAW_ELEMENTS.map(([z, symbol, name, mass, category, period, group, block, config, shells, state, discoveredBy, year]) => ({
+      z, symbol, name, mass, category, period, group, block, config, shells, state, discoveredBy, year,
+      protons: z,
+      electrons: z,
+      neutrons: Math.round(mass - z),
+      imageUrl: WIKI_IMG[z] || null
+    }));
+
+    const ELEMENT_MAP = Object.fromEntries(ELEMENTS.map(el => [el.z, el]));
+    const SYMBOL_MAP = Object.fromEntries(ELEMENTS.map(el => [el.symbol, el]));
+
+    const CATEGORY_STYLES = {
+      "Alkali Metal": { border: "#EF4444", text: "#FCA5A5" },
+      "Alkaline Earth Metal": { border: "#F59E0B", text: "#FCD34D" },
+      "Transition Metal": { border: "#3B82F6", text: "#93C5FD" },
+      "Post-Transition Metal": { border: "#14B8A6", text: "#5EEAD4" },
+      "Metalloid": { border: "#10B981", text: "#6EE7B7" },
+      "Reactive Nonmetal": { border: "#22C55E", text: "#86EFAC" },
+      "Noble Gas": { border: "#A855F7", text: "#D8B4FE" },
+      "Lanthanide": { border: "#EC4899", text: "#F9A8D4" },
+      "Actinide": { border: "#F97316", text: "#FDBA74" },
+      "Unknown": { border: "#64748B", text: "#CBD5E1" }
+    };
+
+    // ============================================================================
+    // 2. 8 HISTORICAL FOUNDERS + 10 TABLE LAYOUTS
+    // ============================================================================
+    const FOUNDER_PORTRAIT_SVG = (key) => {
+      const portraits = {
+        iupac: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="g1" cx="50%" cy="35%" r="65%"><stop offset="0%" stop-color="#2a3147"/><stop offset="100%" stop-color="#0d0e12"/></radialGradient></defs><rect width="160" height="160" fill="url(#g1)"/><circle cx="80" cy="80" r="60" fill="none" stroke="#e63926" stroke-width="3.5"/><circle cx="80" cy="80" r="48" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/><ellipse cx="80" cy="80" rx="54" ry="20" transform="rotate(-28 80 80)" fill="none" stroke="#e63926" stroke-width="2"/><ellipse cx="80" cy="80" rx="54" ry="20" transform="rotate(28 80 80)" fill="none" stroke="#e63926" stroke-width="2"/><text x="80" y="86" text-anchor="middle" fill="#f1f5f9" font-family="monospace" font-weight="800" font-size="22" letter-spacing="1">IUPAC</text></svg>`,
+        mendeleev: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gm" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#47332d"/><stop offset="100%" stop-color="#11131a"/></radialGradient><linearGradient id="skinM" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5dccb"/><stop offset="100%" stop-color="#d8b098"/></linearGradient></defs><rect width="160" height="160" fill="url(#gm)"/><path d="M26 160 C30 120 52 112 80 112 C108 112 130 120 134 160 Z" fill="#181c28"/><path d="M62 112 L80 140 L98 112 Z" fill="#f1f5f9"/><path d="M44 62 C40 32 56 20 80 20 C104 20 120 32 116 62 C118 80 114 94 106 102 C102 126 92 142 80 144 C68 142 58 126 54 102 C46 94 42 80 44 62 Z" fill="#cbd5e1"/><ellipse cx="80" cy="64" rx="25" ry="30" fill="url(#skinM)"/><path d="M54 75 C54 106 65 132 80 135 C95 132 106 106 106 75 C98 83 89 82 80 82 C71 82 62 83 54 75 Z" fill="#e2e8f0"/><path d="M60 76 Q80 69 100 76 Q90 85 80 80 Q70 85 60 76 Z" fill="#cbd5e1"/><circle cx="69" cy="60" r="2.8" fill="#1e293b"/><circle cx="91" cy="60" r="2.8" fill="#1e293b"/><path d="M61 53 Q69 50 75 53 M85 53 Q91 50 99 53" stroke="#94a3b8" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+        janet: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gj" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#2c354d"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gj)"/><path d="M30 160 C34 120 54 112 80 112 C106 112 126 120 130 160 Z" fill="#232a3d"/><polygon points="66,112 80,138 94,112" fill="#f8fafc"/><ellipse cx="80" cy="64" rx="25" ry="31" fill="#edd0be"/><path d="M55 58 C55 32 64 24 80 24 C96 24 105 32 105 58 C101 40 91 35 80 35 C69 35 59 40 55 58 Z" fill="#cbd5e1"/><path d="M58 80 C61 102 69 112 80 114 C91 112 99 102 102 80 Q80 88 58 80 Z" fill="#94a3b8"/><circle cx="69" cy="61" r="2.8" fill="#0f172a"/><circle cx="91" cy="61" r="2.8" fill="#0f172a"/><rect x="61" y="55" width="15" height="11" rx="3" fill="none" stroke="#475569" stroke-width="1.8"/><rect x="84" y="55" width="15" height="11" rx="3" fill="none" stroke="#475569" stroke-width="1.8"/><line x1="76" y1="60" x2="84" y2="60" stroke="#475569" stroke-width="1.8"/></svg>`,
+        benfey: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gb" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#28354f"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gb)"/><path d="M30 160 C34 122 54 114 80 114 C106 114 126 122 130 160 Z" fill="#1e3a5f"/><polygon points="67,114 80,136 93,114" fill="#f1f5f9"/><polygon points="77,118 83,118 82,140 78,140" fill="#e63926"/><ellipse cx="80" cy="64" rx="25" ry="30" fill="#f2d6c4"/><path d="M55 60 C54 33 65 24 80 24 C95 24 106 33 105 60 C100 41 91 37 80 37 C69 37 60 41 55 60 Z" fill="#e2e8f0"/><rect x="60" y="55" width="16" height="12" rx="3" fill="none" stroke="#1e293b" stroke-width="2"/><rect x="84" y="55" width="16" height="12" rx="3" fill="none" stroke="#1e293b" stroke-width="2"/><line x1="76" y1="61" x2="84" y2="61" stroke="#1e293b" stroke-width="2"/><circle cx="68" cy="61" r="2.6" fill="#0f172a"/><circle cx="92" cy="61" r="2.6" fill="#0f172a"/><path d="M70 80 Q80 86 90 80" stroke="#9f5f50" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`,
+        newlands: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gn" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#38303b"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gn)"/><path d="M30 160 C34 120 54 112 80 112 C106 112 126 120 130 160 Z" fill="#18181b"/><polygon points="67,112 80,136 93,112" fill="#ffffff"/><ellipse cx="80" cy="64" rx="24" ry="30" fill="#eccab6"/><path d="M56 56 C56 30 66 24 80 24 C94 24 104 30 104 56 C99 40 90 36 80 36 C70 36 61 40 56 56 Z" fill="#475569"/><path d="M56 70 C55 92 64 108 80 110 C96 108 105 92 104 70 C99 83 91 87 80 87 C69 87 61 83 56 70 Z" fill="#475569"/><circle cx="70" cy="60" r="2.8" fill="#0f172a"/><circle cx="90" cy="60" r="2.8" fill="#0f172a"/></svg>`,
+        chancourtois: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gc" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#2e2e3d"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gc)"/><path d="M30 160 C34 120 54 112 80 112 C106 112 126 120 130 160 Z" fill="#1e293b"/><polygon points="68,112 80,136 92,112" fill="#f8fafc"/><ellipse cx="80" cy="64" rx="24" ry="30" fill="#ebd0be"/><path d="M56 58 C55 32 65 24 80 24 C95 24 105 32 104 58 C99 41 90 37 80 37 C70 37 61 41 56 58 Z" fill="#334155"/><path d="M64 75 Q80 69 96 75 Q88 82 80 78 Q72 82 64 75 Z" fill="#334155"/><path d="M73 88 L80 99 L87 88 Z" fill="#334155"/><circle cx="70" cy="60" r="2.8" fill="#0f172a"/><circle cx="90" cy="60" r="2.8" fill="#0f172a"/></svg>`,
+        dobereiner: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gd" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#45332f"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gd)"/><path d="M28 160 C32 120 54 112 80 112 C106 112 128 120 132 160 Z" fill="#1e2230"/><path d="M60 112 L80 138 L100 112 L91 108 L80 122 L69 108 Z" fill="#f8fafc"/><ellipse cx="80" cy="65" rx="25" ry="30" fill="#f1d3bf"/><path d="M52 64 C49 34 61 22 80 22 C99 22 111 34 108 64 C105 45 96 37 80 37 C64 37 55 45 52 64 Z" fill="#cbd5e1"/><circle cx="69" cy="61" r="2.8" fill="#1e293b"/><circle cx="91" cy="61" r="2.8" fill="#1e293b"/><path d="M61 54 Q69 51 75 54 M85 54 Q91 51 99 54" stroke="#64748b" stroke-width="2.2" fill="none"/><path d="M70 80 Q80 84 90 80" stroke="#8c5446" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`,
+        lavoisier: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gl" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3d2932"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gl)"/><path d="M28 160 C32 120 54 112 80 112 C106 112 128 120 132 160 Z" fill="#2c1e26"/><path d="M66 112 L80 144 L94 112 Z" fill="#ffffff"/><path d="M49 70 C46 37 60 21 80 21 C100 21 114 37 111 70 C114 80 112 91 106 95 C103 75 100 53 80 48 C60 53 57 75 54 95 C48 91 46 80 49 70 Z" fill="#f1f5f9"/><ellipse cx="80" cy="66" rx="24" ry="29" fill="#f5d8c6"/><circle cx="70" cy="62" r="2.8" fill="#1e293b"/><circle cx="90" cy="62" r="2.8" fill="#1e293b"/><path d="M72 81 Q80 85 88 81" stroke="#9f5f50" stroke-width="2.3" fill="none" stroke-linecap="round"/></svg>`,
+        seaborg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gs" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#223047"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gs)"/><path d="M30 160 C34 120 54 112 80 112 C106 112 126 120 130 160 Z" fill="#1e293b"/><polygon points="67,112 80,138 93,112" fill="#ffffff"/><polygon points="77,118 83,118 82,140 78,140" fill="#e63926"/><ellipse cx="80" cy="64" rx="24" ry="31" fill="#f0d2be"/><path d="M56 54 C56 30 66 24 80 24 C94 24 104 30 104 54 C99 38 90 34 80 34 C70 34 61 38 56 54 Z" fill="#64748b"/><circle cx="70" cy="61" r="2.8" fill="#0f172a"/><circle cx="90" cy="61" r="2.8" fill="#0f172a"/><path d="M70 80 Q80 85 90 80" stroke="#8c5446" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`,
+        moseley: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><defs><radialGradient id="gmo" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#2a3145"/><stop offset="100%" stop-color="#11131a"/></radialGradient></defs><rect width="160" height="160" fill="url(#gmo)"/><path d="M30 160 C34 120 54 112 80 112 C106 112 126 120 130 160 Z" fill="#1f2937"/><polygon points="67,112 80,136 93,112" fill="#f8fafc"/><ellipse cx="80" cy="64" rx="24" ry="30" fill="#f3d6c4"/><path d="M56 57 C55 32 65 24 80 24 C95 24 105 32 104 57 C99 39 90 35 80 35 C70 35 61 39 56 57 Z" fill="#57463c"/><circle cx="70" cy="61" r="2.8" fill="#0f172a"/><circle cx="90" cy="61" r="2.8" fill="#0f172a"/><path d="M72 80 Q80 84 88 80" stroke="#9f5f50" stroke-width="2.3" fill="none" stroke-linecap="round"/></svg>`
+      };
+      return `data:image/svg+xml;utf8,${encodeURIComponent(portraits[key] || portraits.mendeleev)}`;
+    };
+
+    const FOUNDERS = {
+      iupac: {
+        name: "IUPAC & International Atomic Weights Commission",
+        era: "1988 – Present",
+        title: "Standard 18-Column Long-Form Periodic Table",
+        portrait: FOUNDER_PORTRAIT_SVG("iupac"),
+        nationality: "International Union of Pure and Applied Chemistry",
+        notes: "Adopted globally by IUPAC to unify American (IA–VIIIA) and European (IA–VIIIB) group numbering into Groups 1 through 18. Organizes all 118 confirmed elements by ascending nuclear proton count (Z) and valence subshell occupancy (s, p, d, f blocks)."
+      },
+      mendeleev: {
+        name: "Dmitri Ivanovich Mendeleev",
+        era: "1834 – 1907 (Table: 1871)",
+        title: "Mendeleev’s 8-Group Periodic System with Predicted Eka-Elements",
+        portrait: FOUNDER_PORTRAIT_SVG("mendeleev"),
+        nationality: "Russian Chemist (Saint Petersburg)",
+        notes: "Mendeleev arranged the 63 known elements by atomic weight and chemical valence, boldly leaving vacant slots where periodicity demanded undiscovered elements—most famously Eka-boron (Scandium, Z=21), Eka-aluminium (Gallium, Z=31), and Eka-silicon (Germanium, Z=32)—and accurately predicting their densities and oxides."
+      },
+      janet: {
+        name: "Charles Janet",
+        era: "1849 – 1932 (Table: 1928)",
+        title: "Left-Step (ADOMAH) Quantum Periodic Table",
+        portrait: FOUNDER_PORTRAIT_SVG("janet"),
+        nationality: "French Engineer, Biologist & Polymath",
+        notes: "Janet reordered the periodic table strictly according to the Madelung (n + l) orbital filling rule. By placing the s-block (Groups 1–2) on the far right, Helium sits naturally atop Beryllium, and every row corresponds cleanly to a constant value of n + l."
+      },
+      benfey: {
+        name: "Theodor Benfey",
+        era: "1925 – 2020 (Table: 1964)",
+        title: "Continuous Radial Spiral Periodic Table",
+        portrait: FOUNDER_PORTRAIT_SVG("benfey"),
+        nationality: "German-American Chemist & Historian of Science",
+        notes: "Designed to eliminate the artificial fragmentation of f-block lanthanides and actinides into detached footers. Hydrogen radiates from the center outward in a continuous spiral with peninsula loops accommodating the transition metals and inner-transition series."
+      },
+      newlands: {
+        name: "John Alexander Reina Newlands",
+        era: "1837 – 1898 (Table: 1865)",
+        title: "Law of Octaves (Seven-Column Musical Periodicity)",
+        portrait: FOUNDER_PORTRAIT_SVG("newlands"),
+        nationality: "English Analytical Chemist (London)",
+        notes: "Newlands observed that when elements are arranged in order of increasing atomic weight, every eighth element shares analogous physical and chemical properties—a pattern he termed the 'Law of Octaves'. Though initially ridiculed by the Chemical Society, he was later awarded the Davy Medal."
+      },
+      chancourtois: {
+        name: "Alexandre-Émile Béguyer de Chancourtois",
+        era: "1820 – 1886 (Table: 1862)",
+        title: "Vis Tellurique (The Telluric Screw Helix)",
+        portrait: FOUNDER_PORTRAIT_SVG("chancourtois"),
+        nationality: "French Geologist & Mineralogist",
+        notes: "The very first scientist to recognize elemental periodicity. He plotted elements along a 45-degree spiral inscribed around a vertical cylinder with a circumference of 16 units (the atomic weight of Oxygen), aligning chemically similar elements vertically—notably Tellurium at the center."
+      },
+      dobereiner: {
+        name: "Johann Wolfgang Döbereiner",
+        era: "1780 – 1849 (Triads: 1829)",
+        title: "Döbereiner’s Law of Triads",
+        portrait: FOUNDER_PORTRAIT_SVG("dobereiner"),
+        nationality: "German Chemist (University of Jena)",
+        notes: "Döbereiner identified groups of three chemically analogous elements—such as (Li, Na, K), (Ca, Sr, Ba), and (Cl, Br, I)—in which the atomic weight of the middle element was nearly the exact arithmetic mean of the lighter and heavier flanking elements."
+      },
+      lavoisier: {
+        name: "Antoine-Laurent de Lavoisier",
+        era: "1743 – 1794 (Treatise: 1789)",
+        title: "Traité Élémentaire de Chimie — 33 Simple Substances",
+        portrait: FOUNDER_PORTRAIT_SVG("lavoisier"),
+        nationality: "French Nobleman & Father of Modern Chemistry",
+        notes: "In 1789, Lavoisier compiled the first modern list of chemical elements—substances that could not be broken down further by chemical analysis—categorizing them into Gases, Non-metals, Metals, and Earths (while famously including Light and Caloric)."
+      },
+      seaborg: {
+        name: "Glenn Theodore Seaborg",
+        era: "1912 – 1999 (Actinide Concept: 1945)",
+        title: "The Actinide Concept & Transuranium Architecture",
+        portrait: FOUNDER_PORTRAIT_SVG("seaborg"),
+        nationality: "American Nuclear Chemist (UC Berkeley)",
+        notes: "Co-discoverer of 10 transuranium elements (Plutonium through Seaborgium). In 1944–1945, Seaborg formulated the Actinide Concept, pulling Thorium, Protactinium, and Uranium out of the d-block transition series to establish a second f-block row beneath the Lanthanides."
+      },
+      moseley: {
+        name: "Henry Gwyn Jeffreys Moseley",
+        era: "1887 – 1915 (X-Ray Law: 1913)",
+        title: "Atomic Number (Z) Ordered Periodic Law",
+        portrait: FOUNDER_PORTRAIT_SVG("moseley"),
+        nationality: "English Physicist (Oxford & Manchester)",
+        notes: "Using X-ray spectroscopy, Moseley proved that an element's fundamental identity is governed by its nuclear positive charge (Atomic Number Z) rather than atomic weight—resolving pair inversions like Argon/Potassium, Cobalt/Nickel, and Tellurium/Iodine."
+      }
+    };
+
+    const TABLE_LAYOUTS = [
+      { id: "iupac", label: "Modern IUPAC (18-Col)", year: "1988", founderKey: "iupac" },
+      { id: "mendeleev", label: "Mendeleev (1871 Gaps)", year: "1871", founderKey: "mendeleev" },
+      { id: "janet", label: "Janet Left-Step", year: "1928", founderKey: "janet" },
+      { id: "benfey", label: "Benfey Spiral", year: "1964", founderKey: "benfey" },
+      { id: "moseley", label: "Moseley Atomic #", year: "1913", founderKey: "moseley" },
+      { id: "seaborg", label: "Seaborg Actinide", year: "1945", founderKey: "seaborg" },
+      { id: "newlands", label: "Newlands Octaves", year: "1865", founderKey: "newlands" },
+      { id: "chancourtois", label: "Telluric Screw", year: "1862", founderKey: "chancourtois" },
+      { id: "dobereiner", label: "Döbereiner Triads", year: "1829", founderKey: "dobereiner" },
+      { id: "lavoisier", label: "Lavoisier 1789 List", year: "1789", founderKey: "lavoisier" }
+    ];
+
+    // ============================================================================
+    // 3. 29 VERIFIED CHEMICAL REACTIONS DATABASE
+    // ============================================================================
+    const REACTIONS_29 = [
+      { id: 1, reactants: ["H", "O"], equation: "2H₂(g) + O₂(g) → 2H₂O(l)", name: "Synthesis of Water (Combustion of Hydrogen)", type: "Exothermic Synthesis / Redox", observation: "Explosive pop with a pale blue flame; condensation of clear liquid water droplets.", reactantNotes: "Diatomic hydrogen (H₂) acts as a high-energy reducing agent; diatomic oxygen (O₂) serves as the oxidizer.", productNotes: "Forms polar covalent O–H bonds (104.5° bent geometry) releasing ΔH = −571.6 kJ/mol." },
+      { id: 2, reactants: ["Na", "Cl"], equation: "2Na(s) + Cl₂(g) → 2NaCl(s)", name: "Formation of Sodium Chloride", type: "Ionic Synthesis / Redox", observation: "Vigorous bright yellow-orange flame; white crystalline smoke settles on vessel walls.", reactantNotes: "Soft, reactive Group 1 alkali metal (Na) readily loses its 3s¹ valence electron to toxic yellow-green chlorine gas (Cl₂).", productNotes: "Produces stable face-centered cubic ionic lattice of table salt (Na⁺Cl⁻) with high lattice enthalpy." },
+      { id: 3, reactants: ["Mg", "O"], equation: "2Mg(s) + O₂(g) → 2MgO(s)", name: "Combustion of Magnesium Ribbon", type: "Exothermic Oxidation", observation: "Blinding intense white UV-rich flare leaving behind a fine white powdery ash.", reactantNotes: "Alkaline earth metal Mg requires initial thermal activation to breach its thin passivation layer.", productNotes: "Yields refractory basic oxide Magnesium Oxide (MgO, melting point 2,852 °C)." },
+      { id: 4, reactants: ["Fe", "S"], equation: "Fe(s) + S(s) → FeS(s)", name: "Synthesis of Iron(II) Sulfide", type: "Direct Combination", observation: "Incandescent red glow propagates spontaneously through the mixture upon heating.", reactantNotes: "Ferromagnetic gray iron filings mixed with yellow orthorhombic sulfur powder.", productNotes: "Forms non-magnetic black/dark-gray brittle solid Iron(II) sulfide." },
+      { id: 5, reactants: ["N", "H"], equation: "N₂(g) + 3H₂(g) ⇌ 2NH₃(g)", name: "Haber–Bosch Ammonia Synthesis", type: "Reversible Catalytic Synthesis", observation: "Colorless pungent gas formed over an iron catalyst at 450 °C and 200 atm.", reactantNotes: "Triple-bonded N≡N requires high activation energy and an Fe/K₂O/Al₂O₃ surface catalyst to cleave.", productNotes: "Produces trigonal pyramidal Ammonia (NH₃), foundational to global nitrogen fertilizers." },
+      { id: 6, reactants: ["C", "O"], equation: "C(s) + O₂(g) → CO₂(g)", name: "Complete Combustion of Carbon", type: "Exothermic Combustion", observation: "Steady orange-red glow with no smoke; turns limewater [Ca(OH)₂] milky.", reactantNotes: "Solid carbon (graphite/coal) oxidized in excess oxygen supply.", productNotes: "Linear nonpolar Carbon Dioxide (CO₂) gas; in limited O₂, toxic CO forms instead." },
+      { id: 7, reactants: ["K", "Br"], equation: "2K(s) + Br₂(l) → 2KBr(s)", name: "Potassium Bromide Synthesis", type: "Alkali–Halogen Redox", observation: "Violent violet flame and dense white fumes upon contact with liquid bromine.", reactantNotes: "Potassium has a lower first ionization energy than sodium, reacting even more vigorously with dark-red liquid Br₂.", productNotes: "White ionic salt Potassium Bromide (KBr), historically used in optical IR windows." },
+      { id: 8, reactants: ["Al", "O"], equation: "4Al(s) + 3O₂(g) → 2Al₂O₃(s)", name: "Aluminum Passivation / Oxidation", type: "Synthesis / Passivation", observation: "Forms an immediate transparent nanometer-thick protective oxide skin; powder burns brilliantly.", reactantNotes: "Lightweight post-transition metal with 3 valence electrons.", productNotes: "Corundum/Alumina (Al₂O₃), an exceptionally hard amphoteric ceramic." },
+      { id: 9, reactants: ["Fe", "O"], equation: "4Fe(s) + 3O₂(g) → 2Fe₂O₃(s)", name: "Oxidation of Iron (Hematite / Rust Base)", type: "Redox Oxidation", observation: "Reddish-brown flaky oxide layer develops slowly in moist air or rapidly when steel wool burns.", reactantNotes: "Transition metal iron oxidized from Fe⁰ to the +3 ferric oxidation state.", productNotes: "Iron(III) oxide (Fe₂O₃), the primary ore of iron and component of rust." },
+      { id: 10, reactants: ["Cu", "S"], equation: "Cu(s) + S(s) → CuS(s)", name: "Synthesis of Copper(II) Sulfide", type: "Direct Combination", observation: "Copper foil glows dark blue-black as sulfur vapor reacts across its surface.", reactantNotes: "Ductile reddish-orange transition metal copper heated with molten sulfur.", productNotes: "Indigo-black Covellite (CuS), a semiconducting mineral." },
+      { id: 11, reactants: ["Zn", "S"], equation: "Zn(s) + S(s) → ZnS(s)", name: "Zinc Sulfide Pyrotechnic Synthesis", type: "Exothermic Synthesis", observation: "Rapid greenish-yellow flash and thick white smoke cloud.", reactantNotes: "Finely powdered zinc metal blended stoichiometrically with sulfur.", productNotes: "Zinc Sulfide (ZnS), a classic phosphor material used in X-ray screens." },
+      { id: 12, reactants: ["H", "Cl"], equation: "H₂(g) + Cl₂(g) → 2HCl(g)", name: "Photochemical Hydrogen Chloride Synthesis", type: "Free-Radical Chain Synthesis", observation: "Explosive chain reaction triggered by UV light; produces misty acidic fumes in moist air.", reactantNotes: "UV photons homolytically cleave Cl₂ into Cl• radicals, initiating rapid propagation with H₂.", productNotes: "Hydrogen chloride gas, which dissolves in water to yield strong Hydrochloric Acid." },
+      { id: 13, reactants: ["H", "N"], equation: "3H₂(g) + N₂(g) ⇌ 2NH₃(g)", name: "Ammonia Formation (Reverse Order Lookup)", type: "Catalytic Reversible Synthesis", observation: "Exothermic equilibrium favored by high pressure (Le Chatelier's principle).", reactantNotes: "Hydrogen and nitrogen gases combined in a 3:1 molar ratio.", productNotes: "NH₃ acts as a Lewis base due to the lone pair on the nitrogen atom." },
+      { id: 14, reactants: ["Ca", "O"], equation: "2Ca(s) + O₂(g) → 2CaO(s)", name: "Formation of Quicklime (Calcium Oxide)", type: "Alkaline Earth Oxidation", observation: "Brick-red flame producing a white caustic solid.", reactantNotes: "Silvery-white calcium metal tarnishes rapidly in air and burns brightly when ignited.", productNotes: "Calcium Oxide (CaO / Quicklime), widely used in cement and steelmaking." },
+      { id: 15, reactants: ["S", "O"], equation: "S(s) + O₂(g) → SO₂(g)", name: "Combustion of Sulfur", type: "Oxidation / Synthesis", observation: "Burns with a characteristic blue flame emitting a sharp, suffocating gas.", reactantNotes: "Yellow elemental sulfur melted and ignited in oxygen.", productNotes: "Sulfur Dioxide (SO₂), a bent polar molecule and precursor to sulfuric acid via the Contact Process." },
+      { id: 16, reactants: ["P", "O"], equation: "P₄(s) + 5O₂(g) → P₄O₁₀(s)", name: "Combustion of White Phosphorus", type: "Vigorous Exothermic Oxidation", observation: "Brilliant yellow-white luminescence and dense white clouds of hygroscopic smoke.", reactantNotes: "Tetrahedral P₄ molecules ignite spontaneously in air above 30 °C.", productNotes: "Tetraphosphorus decoxide (P₄O₁₀), one of the most powerful laboratory desiccants." },
+      { id: 17, reactants: ["Li", "N"], equation: "6Li(s) + N₂(g) → 2Li₃N(s)", name: "Direct Nitridation of Lithium", type: "Room-Temperature Synthesis", observation: "Lithium metal slowly turns ruby-red/black even at room temperature in pure nitrogen.", reactantNotes: "Lithium is the only alkali metal capable of cleaving N₂ directly at ambient temperature.", productNotes: "Lithium Nitride (Li₃N), an ionic fast-ion conductor." },
+      { id: 18, reactants: ["Al", "I"], equation: "2Al(s) + 3I₂(s) → 2AlI₃(s)", name: "Water-Catalyzed Aluminum–Iodine Reaction", type: "Exothermic Halogenation", observation: "A single drop of water triggers billowing purple iodine vapor and sparks.", reactantNotes: "Aluminum powder and solid iodine crystals remain inert until water dissolves surface HI to strip Al₂O₃.", productNotes: "Forms dimeric Aluminum Triiodide (Al₂I₆), a strong Lewis acid." },
+      { id: 19, reactants: ["Zn", "I"], equation: "Zn(s) + I₂(s) → ZnI₂(s)", name: "Synthesis of Zinc Iodide", type: "Aqueous/Exothermic Redox", observation: "Purple iodine color fades to a colorless solution while releasing heat.", reactantNotes: "Zinc metal donates two electrons to reduce elemental iodine (I₂ → 2I⁻).", productNotes: "White hygroscopic Zinc Iodide (ZnI₂), easily electrolyzed back into elemental Zn and I₂." },
+      { id: 20, reactants: ["Mg", "N"], equation: "3Mg(s) + N₂(g) → Mg₃N₂(s)", name: "Formation of Magnesium Nitride", type: "High-Temperature Synthesis", observation: "Burning magnesium continues glowing in pure nitrogen to yield a greenish-yellow powder.", reactantNotes: "At elevated temperatures, Mg reduces even inert dinitrogen gas.", productNotes: "Magnesium Nitride (Mg₃N₂), which hydrolyzes in water to liberate ammonia gas." },
+      { id: 21, reactants: ["Si", "O"], equation: "Si(s) + O₂(g) → SiO₂(s)", name: "Thermal Oxidation of Silicon", type: "Covalent Network Synthesis", observation: "Forms an ultra-pure glassy insulating layer on silicon wafers at 900–1200 °C.", reactantNotes: "Semiconductor crystalline silicon exposed to dry oxygen.", productNotes: "Silicon Dioxide (Silica / Quartz, SiO₂), the dielectric backbone of modern MOSFET microchips." },
+      { id: 22, reactants: ["Cu", "O"], equation: "2Cu(s) + O₂(g) → 2CuO(s)", name: "Surface Oxidation of Copper", type: "Redox Synthesis", observation: "Lustrous salmon-pink copper turns matte black upon heating in air.", reactantNotes: "Copper heated above 300 °C oxidizes to the +2 cupric state.", productNotes: "Copper(II) Oxide (Tenorite, CuO), a black basic oxide." },
+      { id: 23, reactants: ["Hg", "S"], equation: "Hg(l) + S(s) → HgS(s)", name: "Amalgamation & Cinnabar Synthesis", type: "Direct Combination", observation: "Liquid mercury droplets solidify into black metacinnabar powder.", reactantNotes: "Liquid elemental mercury triturated with sulfur flowers.", productNotes: "Mercury(II) Sulfide (HgS), an insoluble, non-volatile sulfide mineral." },
+      { id: 24, reactants: ["Na", "H"], equation: "2Na(s) + H₂(g) → 2NaH(s)", name: "Synthesis of Sodium Hydride", type: "Saline Hydride Formation", observation: "Molten sodium absorbs hydrogen gas at 200–350 °C to form gray-white crystals.", reactantNotes: "Hydrogen acts as an oxidizing agent, gaining an electron to form H⁻.", productNotes: "Sodium Hydride (Na⁺H⁻), a powerful non-nucleophilic superbase in organic synthesis." },
+      { id: 25, reactants: ["Fe", "Cl"], equation: "2Fe(s) + 3Cl₂(g) → 2FeCl₃(s)", name: "Chlorination of Iron", type: "Exothermic Halogenation", observation: "Heated iron wire glows brightly in chlorine gas, producing dense brown-red fumes.", reactantNotes: "Chlorine pushes iron to its +3 ferric oxidation state.", productNotes: "Anhydrous Iron(III) Chloride (FeCl₃), iridescent dark-green/brown crystals." },
+      { id: 26, reactants: ["Ti", "Cl"], equation: "Ti(s) + 2Cl₂(g) → TiCl₄(l)", name: "Chlorination of Titanium (Kroll Intermediate)", type: "Halogenation", observation: "Produces a fuming colorless liquid that hydrolyzes in humid air.", reactantNotes: "Titanium sponge reacted with chlorine gas at elevated temperatures.", productNotes: "Titanium Tetrachloride (TiCl₄), a volatile tetrahedral molecular liquid." },
+      { id: 27, reactants: ["Al", "Br"], equation: "2Al(s) + 3Br₂(l) → Al₂Br₆(s)", name: "Aluminum–Bromine Exothermic Reaction", type: "Violent Redox Synthesis", observation: "Aluminum foil bursts into sparks and floats molten across liquid bromine.", reactantNotes: "Liquid bromine penetrates aluminum's thin oxide layer without needing external heat.", productNotes: "White crystalline Aluminum Bromide dimer (Al₂Br₆)." },
+      { id: 28, reactants: ["H", "F"], equation: "H₂(g) + F₂(g) → 2HF(g)", name: "Hydrogen Fluoride Synthesis", type: "Explosive Chain Redox", observation: "Reacts instantaneously even in total darkness at cryogenic temperatures.", reactantNotes: "Fluorine is the most electronegative element (3.98 Pauling).", productNotes: "Hydrogen Fluoride (HF), exhibiting strong intermolecular hydrogen bonding." },
+      { id: 29, reactants: ["Xe", "F"], equation: "Xe(g) + 2F₂(g) → XeF₄(s)", name: "Xenon Tetrafluoride Noble Gas Synthesis", type: "Noble Gas Covalent Synthesis", observation: "Colorless crystals condense at 400 °C under 6 atm pressure.", reactantNotes: "Heavy noble gas Xenon is oxidized by elemental Fluorine.", productNotes: "Square-planar Xenon Tetrafluoride (XeF₄), a landmark 1962 discovery." }
+    ];
+
+    // ============================================================================
+    // 4. ANIMATED BOHR ATOM MODEL COMPONENT
+    // ============================================================================
+    const AtomModel = ({ element }) => {
+      const [playing, setPlaying] = useState(true);
+      const [speed, setSpeed] = useState(1);
+      const canvasRef = useRef(null);
+      const angleRef = useRef(0);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animId;
+
+        const render = () => {
+          const dpr = window.devicePixelRatio || 1;
+          const size = 250;
+          if (canvas.width !== size * dpr) {
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
+          }
+          ctx.save();
+          ctx.scale(dpr, dpr);
+          ctx.clearRect(0, 0, size, size);
+
+          const cx = size / 2;
+          const cy = size / 2;
+          const shells = element.shells || [1];
+          const numShells = shells.length;
+          const maxRadius = 108;
+          const minRadius = 26;
+          const step = numShells > 1 ? (maxRadius - minRadius) / (numShells - 1) : 0;
+
+          shells.forEach((count, sIdx) => {
+            const radius = numShells === 1 ? 56 : minRadius + sIdx * step;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(230, 57, 38, 0.28)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            const dir = sIdx % 2 === 0 ? 1 : -1;
+            const shellSpeed = (0.016 / (1 + sIdx * 0.28)) * dir;
+            for (let e = 0; e < count; e++) {
+              const theta = (e / count) * Math.PI * 2 + angleRef.current * shellSpeed * 60;
+              const ex = cx + Math.cos(theta) * radius;
+              const ey = cy + Math.sin(theta) * radius;
+
+              ctx.beginPath();
+              ctx.arc(ex, ey, 3.2, 0, Math.PI * 2);
+              ctx.fillStyle = '#e63926';
+              ctx.fill();
+
+              ctx.beginPath();
+              ctx.arc(ex, ey, 1.3, 0, Math.PI * 2);
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fill();
+            }
+          });
+
+          const grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 18);
+          grad.addColorStop(0, '#e63926');
+          grad.addColorStop(1, '#7F1D1D');
+          ctx.beginPath();
+          ctx.arc(cx, cy, 15, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '700 10px monospace';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(element.symbol, cx, cy);
+
+          ctx.restore();
+
+          if (playing) {
+            angleRef.current += 0.015 * speed;
+          }
+          animId = requestAnimationFrame(render);
+        };
+
+        animId = requestAnimationFrame(render);
+        return () => cancelAnimationFrame(animId);
+      }, [element, playing, speed]);
+
+      const shellNames = ['K', 'L', 'M', 'N', 'O', 'P', 'Q'];
+
+      return (
+        <div className="bg-[#0d0e12] border border-[#232736] rounded-xl p-4 flex flex-col items-center">
+          <div className="w-full flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8] flex items-center gap-1.5">
+              <Icon name="atom" className="w-3.5 h-3.5 text-[#e63926]" />
+              Bohr Shell Model
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPlaying(!playing)}
+                className="p-1.5 rounded-lg bg-[#131620] border border-[#232736] text-[#f1f5f9] hover:border-[#e63926] hover:text-[#e63926] transition-colors"
+                title={playing ? "Pause Orbit" : "Resume Orbit"}
+              >
+                <Icon name={playing ? "pause" : "play"} className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setSpeed(s => (s === 1 ? 2.5 : 1))}
+                className="px-2 py-1 rounded-lg bg-[#131620] border border-[#232736] text-[11px] font-mono font-semibold text-[#f1f5f9] hover:border-[#e63926] hover:text-[#e63926] transition-colors"
+              >
+                {speed}x
+              </button>
+            </div>
+          </div>
+
+          <canvas ref={canvasRef} style={{ width: 250, height: 250 }} className="my-1" />
+
+          <div className="w-full mt-2 pt-2 border-t border-[#232736] flex flex-wrap justify-center gap-1.5">
+            {element.shells.map((count, idx) => (
+              <span
+                key={idx}
+                className="px-2 py-0.5 rounded bg-[#131620] border border-[#232736] text-[11px] font-mono text-[#f1f5f9]"
+              >
+                <strong className="text-[#e63926]">{shellNames[idx]}</strong>:{count}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============================================================================
+    // 5. ELEMENT TILE COMPONENT
+    // ============================================================================
+    const CellTile = ({ element, onSelect, isDimmed, compact = false }) => {
+      const [imgError, setImgError] = useState(false);
+      const catStyle = CATEGORY_STYLES[element.category] || CATEGORY_STYLES["Unknown"];
+
+      return (
+        <button
+          onClick={() => onSelect(element)}
+          style={{ borderTopColor: catStyle.border }}
+          className={`group relative text-left bg-[#131620] border border-[#232736] border-t-[3px] rounded-lg overflow-hidden transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#e63926] ${
+            isDimmed
+              ? 'opacity-20 scale-[0.98]'
+              : 'hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/50 hover:border-[#e63926] hover:bg-[#191d2b]'
+          } ${compact ? 'p-1.5 min-h-[58px]' : 'p-1.5 sm:p-2 min-h-[68px] sm:min-h-[76px]'}`}
+        >
+          {element.imageUrl && !imgError && (
+            <img
+              src={element.imageUrl}
+              alt={element.name}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              className="absolute inset-0 w-full h-full object-cover opacity-[0.14] group-hover:opacity-[0.28] transition-opacity pointer-events-none"
+            />
+          )}
+
+          <div className="relative z-10 flex flex-col justify-between h-full">
+            <div className="flex items-center justify-between gap-1">
+              <span className="font-mono text-[10px] sm:text-[11px] font-bold text-[#94a3b8] leading-none">
+                {element.z}
+              </span>
+              <span
+                className="w-1.5 h-1.5 rounded-full shrink-0"
+                style={{ backgroundColor: catStyle.border }}
+              />
+            </div>
+
+            <div className="my-0.5 font-extrabold text-sm sm:text-base text-[#f1f5f9] group-hover:text-[#e63926] tracking-tight leading-none transition-colors">
+              {element.symbol}
+            </div>
+
+            <div className="truncate text-[9px] sm:text-[10px] font-medium text-[#cbd5e1] leading-tight">
+              {element.name}
+            </div>
+            {!compact && (
+              <div className="font-mono text-[8.5px] sm:text-[9px] text-[#64748b] leading-none mt-0.5">
+                {element.mass}
+              </div>
+            )}
+          </div>
+        </button>
+      );
+    };
+
+    // ============================================================================
+    // 6. ELEMENT INSPECTION MODAL
+    // ============================================================================
+    const ElementInfo = ({ element, onClose, onSelectElement }) => {
+      const [imgError, setImgError] = useState(false);
+      const [copiedConfig, setCopiedConfig] = useState(false);
+
+      useEffect(() => {
+        setImgError(false);
+        setCopiedConfig(false);
+      }, [element]);
+
+      if (!element) return null;
+
+      const copyConfig = () => {
+        const textarea = document.createElement("textarea");
+        textarea.value = `${element.name} (${element.symbol}, Z=${element.z}): ${element.config}`;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        setCopiedConfig(true);
+        setTimeout(() => setCopiedConfig(false), 1800);
+      };
+
+      const catStyle = CATEGORY_STYLES[element.category] || CATEGORY_STYLES["Unknown"];
+      const prevEl = ELEMENT_MAP[element.z - 1];
+      const nextEl = ELEMENT_MAP[element.z + 1];
+
+      return (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+          onClick={onClose}
+        >
+          <div
+            className="bg-[#131620] border border-[#232736] rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden my-auto text-[#f1f5f9]"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="bg-[#e63926] text-white px-5 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#0d0e12] text-[#e63926] border border-white/15 flex flex-col items-center justify-center">
+                  <span className="font-mono text-[10px] font-bold text-[#94a3b8] leading-none">{element.z}</span>
+                  <span className="text-xl font-extrabold text-white leading-tight">{element.symbol}</span>
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">{element.name}</h2>
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-black/25 text-white">
+                      {element.category}
+                    </span>
+                  </div>
+                  <p className="text-xs text-red-100 font-mono mt-0.5">
+                    Standard Atomic Weight: {element.mass} u • Block {element.block.toUpperCase()} • Period {element.period}, Group {element.group}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={onClose}
+                className="p-2 rounded-xl bg-black/20 hover:bg-black/35 text-white transition-colors"
+                aria-label="Close element details"
+              >
+                <Icon name="x" className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 max-h-[80vh] overflow-y-auto">
+              <div className="md:col-span-5 space-y-4">
+                <div className="border border-[#232736] rounded-xl overflow-hidden bg-[#0d0e12]">
+                  <div className="px-3 py-2 border-b border-[#232736] bg-[#131620] flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
+                      Physical Specimen Sample
+                    </span>
+                    <span className="text-[11px] font-mono font-semibold text-[#e63926]">
+                      STP: {element.state}
+                    </span>
+                  </div>
+                  {element.imageUrl && !imgError ? (
+                    <div className="relative h-44 bg-[#0d0e12]">
+                      <img
+                        src={element.imageUrl}
+                        alt={`${element.name} physical sample`}
+                        onError={() => setImgError(true)}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent px-3 py-2 text-[11px] text-[#f1f5f9]">
+                        Verified Laboratory Sample — {element.name} ({element.symbol})
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="h-44 flex flex-col items-center justify-center p-4 text-center bg-[#0d0e12]">
+                      <div className="w-12 h-12 rounded-full bg-[#e63926]/15 border border-[#e63926]/40 flex items-center justify-center text-[#e63926] font-extrabold text-lg mb-2">
+                        {element.symbol}
+                      </div>
+                      <p className="text-xs font-bold text-[#f1f5f9]">Synthetic Superheavy Isotope</p>
+                      <p className="text-[11px] text-[#94a3b8] mt-0.5 max-w-[220px]">
+                        Short half-life transactinide synthesized in particle accelerators; macroscopic sample unavailable.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <AtomModel element={element} />
+              </div>
+
+              <div className="md:col-span-7 space-y-5">
+                <div className="bg-[#e63926]/10 border border-[#e63926]/30 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#e63926]">
+                      Fundamental Subatomic Particles
+                    </h3>
+                    <span className="text-[11px] font-mono text-[#94a3b8]">Neutral Ground State</span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-[#0d0e12] border border-[#232736] rounded-lg p-3">
+                      <div className="text-[11px] font-bold text-[#94a3b8] uppercase">Protons (p⁺)</div>
+                      <div className="text-2xl font-extrabold font-mono text-[#f1f5f9] mt-1">
+                        {element.protons}
+                      </div>
+                      <div className="text-[10px] font-mono text-[#e63926] mt-1 bg-[#e63926]/15 px-1.5 py-0.5 rounded inline-block">
+                        p⁺ = Z = {element.z}
+                      </div>
+                    </div>
+
+                    <div className="bg-[#0d0e12] border border-[#232736] rounded-lg p-3">
+                      <div className="text-[11px] font-bold text-[#94a3b8] uppercase">Electrons (e⁻)</div>
+                      <div className="text-2xl font-extrabold font-mono text-[#f1f5f9] mt-1">
+                        {element.electrons}
+                      </div>
+                      <div className="text-[10px] font-mono text-[#e63926] mt-1 bg-[#e63926]/15 px-1.5 py-0.5 rounded inline-block">
+                        e⁻ = Z = {element.z}
+                      </div>
+                    </div>
+
+                    <div className="bg-[#0d0e12] border border-[#232736] rounded-lg p-3">
+                      <div className="text-[11px] font-bold text-[#94a3b8] uppercase">Neutrons (n⁰)</div>
+                      <div className="text-2xl font-extrabold font-mono text-[#f1f5f9] mt-1">
+                        {element.neutrons}
+                      </div>
+                      <div className="text-[10px] font-mono text-[#e63926] mt-1 bg-[#e63926]/15 px-1.5 py-0.5 rounded inline-block">
+                        round({element.mass} − {element.z})
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-[#232736] rounded-xl p-4 bg-[#0d0e12] flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8] mb-1">
+                      Ground-State Electron Configuration
+                    </div>
+                    <div className="font-mono text-lg font-bold text-[#f1f5f9]">
+                      {element.config}
+                    </div>
+                  </div>
+                  <button
+                    onClick={copyConfig}
+                    className="px-3 py-1.5 rounded-lg bg-[#131620] border border-[#232736] hover:border-[#e63926] text-xs font-bold text-[#cbd5e1] hover:text-[#e63926] flex items-center gap-1.5 transition-colors shrink-0"
+                  >
+                    <Icon name={copiedConfig ? "check" : "copy"} className={`w-3.5 h-3.5 ${copiedConfig ? "text-emerald-400" : ""}`} />
+                    <span>{copiedConfig ? "Copied" : "Copy"}</span>
+                  </button>
+                </div>
+
+                <div className="border border-[#232736] rounded-xl overflow-hidden">
+                  <table className="w-full text-left text-sm">
+                    <tbody className="divide-y divide-[#232736]">
+                      <tr className="bg-[#0d0e12]">
+                        <th className="py-2.5 px-4 font-semibold text-[#94a3b8] w-2/5">Chemical Series</th>
+                        <td className="py-2.5 px-4 font-bold" style={{ color: catStyle.text }}>
+                          {element.category}
+                        </td>
+                      </tr>
+                      <tr className="bg-[#131620]">
+                        <th className="py-2.5 px-4 font-semibold text-[#94a3b8]">Standard Atomic Mass</th>
+                        <td className="py-2.5 px-4 font-mono text-[#f1f5f9]">{element.mass} g/mol</td>
+                      </tr>
+                      <tr className="bg-[#0d0e12]">
+                        <th className="py-2.5 px-4 font-semibold text-[#94a3b8]">Phase at STP (273.15 K)</th>
+                        <td className="py-2.5 px-4 text-[#f1f5f9]">{element.state}</td>
+                      </tr>
+                      <tr className="bg-[#131620]">
+                        <th className="py-2.5 px-4 font-semibold text-[#94a3b8]">Discovered By</th>
+                        <td className="py-2.5 px-4 text-[#f1f5f9]">{element.discoveredBy}</td>
+                      </tr>
+                      <tr className="bg-[#0d0e12]">
+                        <th className="py-2.5 px-4 font-semibold text-[#94a3b8]">Year of Discovery</th>
+                        <td className="py-2.5 px-4 font-mono text-[#f1f5f9]">
+                          {element.year < 0 ? `${Math.abs(element.year)} BCE` : element.year}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  {prevEl ? (
+                    <button
+                      onClick={() => onSelectElement(prevEl)}
+                      className="px-3 py-2 rounded-lg bg-[#0d0e12] border border-[#232736] hover:border-[#e63926] text-xs font-semibold text-[#cbd5e1] hover:text-[#e63926] transition-colors"
+                    >
+                      ← {prevEl.z}. {prevEl.name}
+                    </button>
+                  ) : <div />}
+
+                  {nextEl ? (
+                    <button
+                      onClick={() => onSelectElement(nextEl)}
+                      className="px-3 py-2 rounded-lg bg-[#0d0e12] border border-[#232736] hover:border-[#e63926] text-xs font-semibold text-[#cbd5e1] hover:text-[#e63926] transition-colors"
+                    >
+                      {nextEl.z}. {nextEl.name} →
+                    </button>
+                  ) : <div />}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============================================================================
+    // 7. BENFEY SPIRAL SVG RENDERER
+    // ============================================================================
+    const BenfeySpiral = ({ elements, onSelect, searchQuery }) => {
+      const cx = 360;
+      const cy = 360;
+
+      return (
+        <div className="bg-[#0d0e12] border border-[#232736] rounded-xl p-4 flex flex-col items-center overflow-x-auto">
+          <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-[#232736]">
+            <div>
+              <h3 className="text-sm font-extrabold text-[#f1f5f9]">
+                Theodor Benfey Continuous Spiral Geometry (1964)
+              </h3>
+              <p className="text-xs text-[#94a3b8]">
+                Click any node along the radial spiral to inspect atomic structure and sample data.
+              </p>
+            </div>
+            <span className="px-2.5 py-1 rounded-md bg-[#e63926]/15 text-[#e63926] font-mono text-xs font-semibold">
+              Z = 1 → 118 Continuous Helix
+            </span>
+          </div>
+
+          <svg viewBox="0 0 720 720" className="w-full max-w-[680px] h-auto select-none">
+            {[80, 145, 210, 275, 335].map((r, i) => (
+              <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke="#1e2230" strokeWidth="1" strokeDasharray="4 4" />
+            ))}
+            <path
+              d={elements
+                .map((el, idx) => {
+                  const angle = idx * 0.34 - Math.PI / 2;
+                  const radius = 34 + idx * 2.55;
+                  const x = cx + Math.cos(angle) * radius;
+                  const y = cy + Math.sin(angle) * radius;
+                  return `${idx === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`;
+                })
+                .join(' ')}
+              fill="none"
+              stroke="#262b3d"
+              strokeWidth="1.5"
+            />
+            {elements.map((el, idx) => {
+              const angle = idx * 0.34 - Math.PI / 2;
+              const radius = 34 + idx * 2.55;
+              const x = cx + Math.cos(angle) * radius;
+              const y = cy + Math.sin(angle) * radius;
+              const cat = CATEGORY_STYLES[el.category] || CATEGORY_STYLES["Unknown"];
+              const matches =
+                !searchQuery ||
+                el.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                el.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                String(el.z) === searchQuery.trim();
+
+              return (
+                <g
+                  key={el.z}
+                  transform={`translate(${x}, ${y})`}
+                  onClick={() => onSelect(el)}
+                  className="cursor-pointer transition-opacity"
+                  style={{ opacity: matches ? 1 : 0.2 }}
+                >
+                  <circle r={12.5} fill="#131620" stroke={cat.border} strokeWidth="2.2" />
+                  <text y="-2.5" textAnchor="middle" fontSize="6" fontFamily="monospace" fill="#94a3b8">
+                    {el.z}
+                  </text>
+                  <text y="5.5" textAnchor="middle" fontSize="8.5" fontWeight="800" fill="#f1f5f9">
+                    {el.symbol}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+      );
+    };
+
+    // ============================================================================
+    // 8. HISTORICAL & MODERN TABLE RENDERERS
+    // ============================================================================
+    const TableViewport = ({ layoutId, elements, onSelect, searchQuery, blockFilter, categoryFilter }) => {
+      const isMatch = (el) => {
+        const q = searchQuery.trim().toLowerCase();
+        const matchSearch =
+          !q ||
+          el.name.toLowerCase().includes(q) ||
+          el.symbol.toLowerCase().includes(q) ||
+          String(el.z) === q ||
+          el.category.toLowerCase().includes(q);
+        const matchBlock = blockFilter === 'ALL' || el.block.toUpperCase() === blockFilter;
+        const matchCategory = categoryFilter === 'ALL' || el.category === categoryFilter;
+        return matchSearch && matchBlock && matchCategory;
+      };
+
+      if (layoutId === 'iupac' || layoutId === 'seaborg' || layoutId === 'moseley') {
+        const mainElements = elements.filter(
+          el => !(el.z >= 57 && el.z <= 71) && !(el.z >= 89 && el.z <= 103)
+        );
+        const lanthanides = elements.filter(el => el.z >= 57 && el.z <= 71);
+        const actinides = elements.filter(el => el.z >= 89 && el.z <= 103);
+
+        const gridMatrix = Array.from({ length: 7 }, () => Array(18).fill(null));
+        mainElements.forEach(el => {
+          if (el.period >= 1 && el.period <= 7 && el.group >= 1 && el.group <= 18) {
+            gridMatrix[el.period - 1][el.group - 1] = el;
+          }
+        });
+
+        return (
+          <div className="overflow-x-auto pb-2">
+            <div className="min-w-[1040px] space-y-3">
+              <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
+                {Array.from({ length: 18 }, (_, i) => (
+                  <div key={i} className="text-center font-mono text-[10px] font-bold text-[#64748b]">
+                    {i + 1}
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-1">
+                {gridMatrix.map((row, rIdx) => (
+                  <div key={rIdx} className="grid gap-1" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
+                    {row.map((cell, cIdx) => {
+                      if (rIdx === 5 && cIdx === 2) {
+                        return (
+                          <div key="la-marker" className="rounded-lg border border-dashed border-pink-500/60 bg-pink-500/10 p-1.5 flex flex-col items-center justify-center text-center">
+                            <span className="font-mono text-[10px] font-bold text-pink-400">57–71</span>
+                            <span className="text-[10px] font-extrabold text-pink-200">La–Lu</span>
+                          </div>
+                        );
+                      }
+                      if (rIdx === 6 && cIdx === 2) {
+                        return (
+                          <div key="ac-marker" className="rounded-lg border border-dashed border-orange-500/60 bg-orange-500/10 p-1.5 flex flex-col items-center justify-center text-center">
+                            <span className="font-mono text-[10px] font-bold text-orange-400">89–103</span>
+                            <span className="text-[10px] font-extrabold text-orange-200">Ac–Lr</span>
+                          </div>
+                        );
+                      }
+                      if (!cell) return <div key={cIdx} />;
+                      return <CellTile key={cell.z} element={cell} onSelect={onSelect} isDimmed={!isMatch(cell)} />;
+                    })}
+                  </div>
+                ))}
+              </div>
+
+              <div className={`pt-3 space-y-1 rounded-xl ${layoutId === 'seaborg' ? 'p-3 bg-[#e63926]/10 border border-[#e63926]/30' : ''}`}>
+                {layoutId === 'seaborg' && (
+                  <div className="text-[11px] font-bold text-[#e63926] mb-1.5 flex items-center gap-1.5">
+                    <Icon name="sparkles" className="w-3.5 h-3.5" />
+                    Seaborg’s 1945 Actinide Series Integration (5f Subshell Periodicity)
+                  </div>
+                )}
+                <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
+                  <div className="col-span-3 flex items-center justify-end pr-2 text-[11px] font-bold text-pink-400">
+                    Lanthanides (4f)
+                  </div>
+                  {lanthanides.map(el => (
+                    <CellTile key={el.z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} />
+                  ))}
+                </div>
+                <div className="grid gap-1" style={{ gridTemplateColumns: 'repeat(18, minmax(0, 1fr))' }}>
+                  <div className="col-span-3 flex items-center justify-end pr-2 text-[11px] font-bold text-orange-400">
+                    Actinides (5f)
+                  </div>
+                  {actinides.map(el => (
+                    <CellTile key={el.z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      if (layoutId === 'mendeleev') {
+        const mendeleevRows = [
+          { series: "Series 1", cells: [1, null, null, null, null, null, null, null] },
+          { series: "Series 2", cells: [3, 4, 5, 6, 7, 8, 9, null] },
+          { series: "Series 3", cells: [11, 12, 13, 14, 15, 16, 17, null] },
+          {
+            series: "Series 4",
+            cells: [
+              19, 20,
+              { gap: "Eka-Boron (? = 44)", actualZ: 21, note: "Predicted by Mendeleev in 1871; discovered as Scandium in 1879." },
+              22, 23, 24, 25, 26
+            ]
+          },
+          {
+            series: "Series 5",
+            cells: [
+              29, 30,
+              { gap: "Eka-Aluminium (? = 68)", actualZ: 31, note: "Predicted density 5.9 g/cm³; discovered as Gallium in 1875." },
+              { gap: "Eka-Silicon (? = 72)", actualZ: 32, note: "Predicted atomic weight 72; discovered as Germanium in 1886." },
+              33, 34, 35, null
+            ]
+          },
+          {
+            series: "Series 6",
+            cells: [
+              37, 38, 39, 40, 41, 42,
+              { gap: "Eka-Manganese (? = 100)", actualZ: 43, note: "Predicted gap between Mo and Ru; synthesized as Technetium in 1937." },
+              44
+            ]
+          },
+          { series: "Series 7", cells: [47, 48, 49, 50, 51, 52, 53, null] }
+        ];
+        const groups = ["Group I (R₂O)", "Group II (RO)", "Group III (R₂O₃)", "Group IV (RO₂)", "Group V (R₂O₅)", "Group VI (RO₃)", "Group VII (R₂O₇)", "Group VIII (RO₄)"];
+
+        return (
+          <div className="overflow-x-auto pb-2">
+            <div className="min-w-[880px] space-y-2">
+              <div className="grid grid-cols-9 gap-2">
+                <div className="text-[11px] font-bold text-[#94a3b8] uppercase flex items-center">Series</div>
+                {groups.map((g, i) => (
+                  <div key={i} className="bg-[#0d0e12] border border-[#232736] rounded-lg p-2 text-center text-[11px] font-extrabold text-[#f1f5f9]">
+                    {g}
+                  </div>
+                ))}
+              </div>
+              {mendeleevRows.map((row, idx) => (
+                <div key={idx} className="grid grid-cols-9 gap-2 items-stretch">
+                  <div className="bg-[#0d0e12] border border-[#232736] rounded-lg px-2 flex items-center justify-center font-mono text-xs font-bold text-[#94a3b8]">
+                    {row.series}
+                  </div>
+                  {row.cells.map((item, cIdx) => {
+                    if (!item) return <div key={cIdx} className="rounded-lg bg-[#0d0e12]/50 border border-[#1d202e]" />;
+                    if (typeof item === 'object' && item.gap) {
+                      const actualEl = ELEMENT_MAP[item.actualZ];
+                      return (
+                        <button
+                          key={cIdx}
+                          onClick={() => onSelect(actualEl)}
+                          className="rounded-lg border-2 border-dashed border-[#e63926] bg-[#e63926]/10 p-2 text-left hover:bg-[#e63926] text-[#f1f5f9] hover:text-white group transition-colors"
+                        >
+                          <div className="text-[10px] font-mono font-extrabold text-[#e63926] group-hover:text-red-100">VACANT SLOT</div>
+                          <div className="text-xs font-extrabold mt-0.5 leading-tight">{item.gap}</div>
+                          <div className="text-[9.5px] opacity-80 mt-1 line-clamp-2">{item.note}</div>
+                        </button>
+                      );
+                    }
+                    const el = ELEMENT_MAP[item];
+                    return <CellTile key={el.z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} />;
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      if (layoutId === 'janet') {
+        const janetPeriods = [
+          { nl: "n + l = 1", els: [1, 2] },
+          { nl: "n + l = 2", els: [3, 4] },
+          { nl: "n + l = 3", els: [5, 6, 7, 8, 9, 10, 11, 12] },
+          { nl: "n + l = 4", els: [13, 14, 15, 16, 17, 18, 19, 20] },
+          { nl: "n + l = 5", els: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38] },
+          { nl: "n + l = 6", els: [39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56] },
+          { nl: "n + l = 7 (f+d+p+s)", els: [57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88] },
+          { nl: "n + l = 8 (f+d+p)", els: [89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118] }
+        ];
+
+        return (
+          <div className="space-y-2 overflow-x-auto pb-2">
+            <div className="text-xs text-[#cbd5e1] bg-[#0d0e12] border border-[#232736] rounded-lg px-3 py-2">
+              <strong>Left-Step Quantum Alignment:</strong> Notice how <span className="font-mono text-[#e63926] font-bold">Helium (Z=2)</span> aligns directly above <span className="font-mono font-bold text-white">Beryllium (Z=4)</span> and <span className="font-mono font-bold text-white">Magnesium (Z=12)</span> as an s² alkaline-earth analog.
+            </div>
+            <div className="min-w-[1100px] space-y-1.5">
+              {janetPeriods.map((row, idx) => (
+                <div key={idx} className="flex items-center justify-end gap-1">
+                  <div className="mr-auto px-2.5 py-1 rounded bg-[#0d0e12] border border-[#232736] font-mono text-[11px] font-bold text-[#94a3b8] shrink-0">
+                    {row.nl}
+                  </div>
+                  {row.els.map(z => {
+                    const el = ELEMENT_MAP[z];
+                    return (
+                      <div key={z} className="w-[46px] shrink-0">
+                        <CellTile element={el} onSelect={onSelect} isDimmed={!isMatch(el)} compact />
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      if (layoutId === 'benfey') {
+        return <BenfeySpiral elements={elements} onSelect={onSelect} searchQuery={searchQuery} />;
+      }
+
+      if (layoutId === 'newlands') {
+        const octaves = [
+          [1, 3, 4, 5, 6, 7, 8],
+          [9, 11, 12, 13, 14, 15, 16],
+          [17, 19, 20, 24, 22, 25, 26],
+          [27, 29, 30, 39, 49, 33, 34],
+          [35, 37, 38, 58, 40, 42, 45],
+          [53, 55, 56, 73, 50, 51, 52]
+        ];
+        const notes = ["Do (1)", "Re (2)", "Mi (3)", "Fa (4)", "Sol (5)", "La (6)", "Si (7)"];
+
+        return (
+          <div className="overflow-x-auto pb-2">
+            <div className="min-w-[720px] space-y-2">
+              <div className="grid grid-cols-7 gap-2">
+                {notes.map((n, i) => (
+                  <div key={i} className="bg-[#e63926]/15 border border-[#e63926]/30 rounded-lg py-2 text-center font-mono text-xs font-extrabold text-[#e63926]">
+                    {n}
+                  </div>
+                ))}
+              </div>
+              {octaves.map((row, rIdx) => (
+                <div key={rIdx} className="grid grid-cols-7 gap-2">
+                  {row.map(z => {
+                    const el = ELEMENT_MAP[z];
+                    return <CellTile key={z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} />;
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      if (layoutId === 'chancourtois') {
+        const helixElements = elements.filter(el => el.z <= 54);
+        return (
+          <div className="space-y-3">
+            <div className="bg-[#0d0e12] border border-[#232736] rounded-lg p-3 text-xs text-[#cbd5e1]">
+              <strong>45° Cylindrical Helix Projection (Circumference = 16 u):</strong> Elements separated by multiples of 16 atomic weight units align vertically down the cylinder (e.g., Lithium 7 → Sodium 23 → Potassium 39).
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
+              {helixElements.map(el => (
+                <div key={el.z} className="relative">
+                  <div className="text-[9px] font-mono text-[#64748b] mb-0.5 px-1">
+                    Turn {(el.mass / 16).toFixed(2)}π
+                  </div>
+                  <CellTile element={el} onSelect={onSelect} isDimmed={!isMatch(el)} compact />
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      if (layoutId === 'dobereiner') {
+        const triads = [
+          { title: "Alkali Metal Triad", ids: [3, 11, 19], calc: "(6.94 + 39.10) / 2 = 23.02 u (Actual Na: 22.99 u)" },
+          { title: "Alkaline Earth Triad", ids: [20, 38, 56], calc: "(40.08 + 137.33) / 2 = 88.70 u (Actual Sr: 87.62 u)" },
+          { title: "Halogen Triad", ids: [17, 35, 53], calc: "(35.45 + 126.90) / 2 = 81.18 u (Actual Br: 79.90 u)" },
+          { title: "Chalcogen Triad", ids: [16, 34, 52], calc: "(32.06 + 127.60) / 2 = 79.83 u (Actual Se: 78.97 u)" },
+          { title: "Iron Group Triad", ids: [26, 27, 28], calc: "Nearly identical atomic masses: Fe (55.85), Co (58.93), Ni (58.69)" }
+        ];
+
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {triads.map((t, idx) => (
+              <div key={idx} className="bg-[#0d0e12] border border-[#232736] rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-extrabold text-[#f1f5f9]">{t.title}</h4>
+                  <span className="px-2 py-0.5 rounded bg-[#e63926]/15 text-[#e63926] font-mono text-[10px] font-bold">
+                    Triad #{idx + 1}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mb-3">
+                  {t.ids.map(z => {
+                    const el = ELEMENT_MAP[z];
+                    return <CellTile key={z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} />;
+                  })}
+                </div>
+                <div className="bg-[#131620] border border-[#232736] rounded-lg px-2.5 py-2 font-mono text-[11px] text-[#cbd5e1]">
+                  {t.calc}
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      if (layoutId === 'lavoisier') {
+        const groups = [
+          { title: "I. Elastic Fluids (Gases)", ids: [8, 7, 1], extra: ["Light (Lumière)", "Caloric (Heat)"] },
+          { title: "II. Oxidizable Non-Metallic Substances", ids: [16, 15, 6], extra: ["Muriatic Radical", "Fluoric Radical", "Boracic Radical"] },
+          { title: "III. Metallic Substances", ids: [51, 47, 33, 83, 27, 29, 50, 26, 25, 80, 42, 28, 79, 78, 82, 74, 30], extra: [] },
+          { title: "IV. Salifiable Earthy Substances", ids: [20, 12, 56, 13, 14], extra: ["Lime (CaO)", "Magnesia (MgO)", "Barytes (BaO)", "Argill (Al₂O₃)", "Silex (SiO₂)"] }
+        ];
+
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {groups.map((grp, idx) => (
+              <div key={idx} className="bg-[#0d0e12] border border-[#232736] rounded-xl p-4">
+                <h4 className="text-sm font-extrabold text-[#e63926] mb-3 pb-2 border-b border-[#232736]">
+                  {grp.title}
+                </h4>
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                  {grp.ids.map(z => {
+                    const el = ELEMENT_MAP[z];
