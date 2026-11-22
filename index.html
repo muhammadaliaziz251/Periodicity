@@ -1276,22 +1276,4 @@
                 </h4>
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {grp.ids.map(z => {
-                    const el = ELEMENT_MAP[z]
-                                  return <CellTile key={z} element={el} onSelect={onSelect} isDimmed={!isMatch(el)} compact />;
-})}
-{grp.extra.map((label, i) => (
-<div key={i} className="border border-dashed border-[#2f354a] bg-[#131620] rounded-lg p-2 flex flex-col justify-center text-center">
-<span className="text-[9px] font-mono uppercase text-[#64748b]">1789 Entry</span>
-<span className="text-[11px] font-bold text-[#cbd5e1] leading-tight mt-0.5">{label}</span>
-</div>
-))}
-</div>
-</div>
-))}
-</div>
-);
-}
-return null;
-};
-                  
-            
+                    const el = ELEMENT_MAP[z];
